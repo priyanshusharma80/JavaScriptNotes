@@ -1,1 +1,175 @@
+// # Interview Questions
 
+// Ques: Loop an Array of Objects and remove all objects which don't have gender's value male
+const people = [
+  {
+    name: "Alice",
+    gender: "female",
+    age: 25,
+    occupation: "Engineer"
+  },
+  {
+    name: "Bob",
+    gender: "male",
+    age: 30,
+    occupation: "Doctor"
+  },
+  {
+    name: "Charlie",
+    gender: "male",
+    age: 28,
+    occupation: "Teacher"
+  },
+  {
+    name: "Diana",
+    gender: "female",
+    age: 22,
+    occupation: "Designer"
+  },
+  {
+    name: "Eve",
+    gender: "female",
+    age: 35,
+    occupation: "Manager"
+  }
+];
+
+var res = people.filter(function(element){
+    return element.gender === 'male';
+});
+
+console.log(res);
+
+
+// Ques:  In an Array of Numbers and Strings, only add those members and strings which are not strings
+function getSum2(arr){
+    var sum = 0;
+    arr.forEach(function(element){
+        if(typeof element === 'number') sum+=element;
+    });
+    return sum;
+}
+
+console.log(getSum2([1,'hello',true,4,5]));
+
+// Ques: Loop an array and add all members of it
+
+function getSum(){
+    var arr = [1,2,3,4,5,6,7];
+    var sum = 0;
+    
+    arr.forEach(function(element){
+        sum+=element;
+    });
+    
+    console.log(sum);
+}
+
+
+// Ques:  Write a JavaScript Function to get the number of occurences of each letter in given stringToLette
+
+function countOcc(str){
+    var obj = {};
+    str.split("").forEach(function(element){
+        if(!obj.hasOwnProperty(element)) obj[element]=1;
+        else obj[element]++;
+    })
+    return obj;
+}
+
+console.log(countOcc("abbcad"));
+
+
+// Ques: Write a JavaScript function that accepts a string as a parameter and coverts the
+// first letter of each word of the string in uppercase
+
+function convertToUppercase(str){
+    return str.split(" ").map(function(word){
+        return word.charAt(0).toUpperCase()+word.substring(1);
+    });
+}
+
+console.log(convertToUppercase("hello my name is priyanshu").join(" "));
+
+// Ques: Write a JavaScript Function that returns a passed string with letters in alphabetical order
+// Example :    harsh -> ahhrs
+function stringToLetter(str){
+    return str.split("").sort();
+}
+console.log(stringToLetter("harsh"));
+
+// Ques:  Write a JavaScript Function that checks whether a passed string is palindrome!
+function checkPal(str){
+    return str.split("").reverse().join("")==str;
+}
+
+console.log(checkPal("babab"));
+
+// Ques: Make a function that reverse a number
+function reverseKaro(number){
+    // bada rasta 
+    var res = 0;
+    while(number>0){
+        let rem = number%10;
+        res = res*10+rem;
+        number=Math.floor(number/10);
+    }
+    return res;
+    
+    // chhota rasta
+    return number.toString().split("").reverse().join("");
+}
+
+console.log(reverseKaro(456));        // 654
+
+// Ques:  Make this work :     duplicate([1,2,3,4]);      =  [1,2,3,4,1,2,3,4];
+
+function duplicate(arr){
+    return arr.concat(arr);
+}
+
+console.log(duplicate([1,2,3,4]));
+
+// Ques:   How to check if a number is an integer? 
+Number.isInteger(2);      // true;
+Number.isInteger(2.5);      // false;
+var a = 12;
+if(a%1===0) console.log("integer");
+else console.log("Not an Integer");
+
+
+// Ques: How to empty an array in JavaScript  (Do not reset it to new array and do not loop through to pop each value);
+var arr = [1,2,3,4,5];
+// just do 
+arr.length = 0;       // it will make array empty
+
+
+// Ques: How to check if an object is an array or not?
+function checkArray(elem){
+    return Array.isArray(elem);
+}
+
+console.log(checkArray([]));
+console.log(checkArray({}));
+
+
+// Ques: Given a string, reverse each word in a String
+
+var str = "sare jahan se accha hindostaan hamara".split(" ").forEach(function(word){
+
+    // Approach 2: 
+    word.split("").reverse().join("");
+})
+
+// in the above code, the changes are not being saved, so what we can do we can use Map
+
+var arr = "sare jahan se accha hindostaan hamara";
+console.log(arr);
+var savedStr = arr.split(" ").map(function(word){
+    return word.split("").reverse().join("");
+})
+
+// now we can join each word
+
+var finalans = savedStr.join(" ");
+console.log(finalans);
