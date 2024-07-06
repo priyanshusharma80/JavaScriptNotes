@@ -1,6 +1,3 @@
-# COMPLETE JAVASCRIPT NOTES
-
-
 Note: 
 - JavaScript is a dynamically typed language
 - all no premitive datatype has typeof an object
@@ -679,6 +676,370 @@ headingarr.forEach(function(heading){
 })
 
 
+// ----------------------- CREATING NEW ELEMENT  ----------------------- 
+
+const parent = document.getElementsByClassName('App')[0];
+
+console.log(parent.children);                   // will return a HTMLCollection containing all the child nodes
+console.log(parent.children[1].innerHTML);
+console.log(parent.children[1].innerText);
+
+parent.children[1].style.color = 'green';
+
+const item = document.createElement('div');
+
+
+// setting attributes
+div.id = 'newDiv';
+div.className = 'newClass';
+div.textContent = 'This is a new div';
+
+// creating comment 
+const comment = document.createComment('This is a comment');
+console.log(comment)                  // will print    <!-- This is a Comment --> 
+
+console.log(parent.childNodes);                    // it will return nodelist including all
+
+// nextSibling vs nextElementSibling
+
+/*
+
+Example HTML: 
+
+<div class="App">
+          <h1>Hello React.</h1>
+          <!--This is a Test-->
+          <h2>Start editing to see some magic happen!</h2>
+          <div class="aisehi" style="background-color: black;"></div>
+</div>
+
+*/
+
+console.log(parent.children[0].nextSibling);               // it will return comment
+console.log(parent.children[0].nextElementSibling)      // it will return h2
+
+
+// creation of textnode
+const textnode = document.createTextNode('This is Text');
+
+// appending child in parent 
+parent.appendChild(item);
+
+// agar body ke andar karna h to 
+document.body.appendChild(parent);
+
+
+
+// ------------------- Edit and Remove Elements ---------------------
+
+parent.children[0].replaceWith(comment);                               // replace kr dega first element ko comment se and first element delete ho jaega
+parent.replaceChild(parent.chidren[0],comment);                   // replace kr dega comment ko h2 se and h2 remove ho jaega
+
+// innerHTML and outerHTML
+
+
+// remove method 
+comment.remove();                          // will remove comment element 
+
+
+
+
+// ------------------ EVENTS in JavaScript -------------------------
+
+// ways to insert event  
+//           - inline
+//           - External
+
+// inline suggested ni h
+// <div class='mydiv' onclick="alert("hello")"> </div>           like this
+
+document.getElementById('parent').onclick = function(){
+    alert("Hello Priyanshu!");
+})
+
+// eventlistener - mostly used
+document.getElementById('parent').addEventListener('click', function(){
+    alert("You Clicked Again!");
+}, false)                            // 3rd parameter - event propagation (default - false)
+
+// ab event pe bhi to kaam krna pdega
+
+document.getElementById('parent').addEventListener('click',function(e){
+    console.log(e);                                 // will return a pointerEvent object
+    console.log(e.target);                     // will print that targeted element on which the event happened 
+})
+
+// To Study:         type, timestamp, preventDefault, target, toElement, srcElement, currentTarget
+//                         clientX,clientY, screenX, screenY, altKey, ctrlKey, shiftKey, keyCode
+
+// EVENT PROPAGATION 
+- Event Bubbling  (false)     --  Neeche se Uppar Jaata h 
+- Event Capturing  ---  upar se neeche 
+
+/*
+
+EXample HTML :
+
+ <div >
+        <ul id="images">
+            <li><img width="200px" id="photoshop" src="https://images.pexels.com/photos/3561339/pexels-photo-3561339.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt="photoshop"></li>
+            <li><img width="200px" id="japan" src="https://images.pexels.com/photos/3532553/pexels-photo-3532553.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt=""></li>
+            <li><img width="200px" id="river" src="https://images.pexels.com/photos/3532551/pexels-photo-3532551.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt=""></li>
+            <li><img width="200px" id="owl" src="https://images.pexels.com/photos/3532552/pexels-photo-3532552.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt="" ></li>
+            <li><img width="200px" id="prayer" src="https://images.pexels.com/photos/2522671/pexels-photo-2522671.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt=""></li>
+            <li><a style="color: aliceblue;" href="https://google.com" id="google">Google</a></li>
+        </ul>
+   </div>
+
+*/
+
+document.getElementById('owl').onclick = function(){
+        alert("owl clicked")
+    }
+
+    // type, timestamp, defaultPrevented
+    // target, toElement, srcElement, currentTarget,
+    // clientX, clientY, screenX, screenY
+    // altkey, ctrlkey, shiftkey, keyCode
+
+document.getElementById('images').addEventListener('click', function(e){
+    console.log("clicked inside the ul");
+}, false)
+
+document.getElementById('owl').addEventListener('click', function(e){
+    console.log("owl clicked");
+    e.stopPropagation()                                                // ye lagane ke baad bubble neeche se upar ni jaega mtlb parent ka event print ni krega
+}, false)
+
+document.getElementById('google').addEventListener('click',function(e){
+    e.preventDefault();
+    e.stopPropagation()
+    console.log("google clicked");
+}, false)
+
+
+document.querySelector('#images').addEventListener('click', function(e){
+    console.log(e.target.tagName);
+    if (e.target.tagName === 'IMG') {
+        console.log(e.target.id);
+        let removeIt = e.target.parentNode
+        removeIt.remove()
+    }
+})
+
+
+// ------------------- API and V8 Engine ----------------------
+
+const reqUrl = "https://api.github.com/users/priyanshusharma80";
+const xhr = new XMLHttpRequest();
+xhr.open('GET', reqUrl);
+
+// console.log(xhr.readyState);                   will print 1
+
+xhr.onreadystatechange = function(){
+    console.log(xhr.readyState);
+    if(xhr.readyState===4){
+        const data  = this.response;
+        console.log(typeof data);               // string 
+        const obj = JSON.parse(data);
+        console.log(typeof obj)                 // object
+        console.log(obj.following);
+        console.log(this.response);
+    }
+}
+xhr.send();
+
+
+
+// ------------------------ PROMISES in JAVASCRIPT ------------------------
+
+// Promise objects represents the eventual completion (or failure) of an asynchronous operation and its resulting value
+
+it has these following 3 states : 
+                   - pending (initial state neither fulfilled nor rejected)
+                   - fullfilled (meaning that the operation was completed successfully)
+                   - reject   (meaning that the operation failed)
+
+
+// creating promises in javascript
+const promiseOne = new Promise(function(resolve,reject){
+    setTimeout(function(){
+        console.log("Async Task is Completed");
+        resolve();                                                            // now it will get connected to then 
+    },1000)
+});
+
+promiseOne.then(function(){
+    console.log('Promise Consumed!');              // will print Async Task is Completed, Promise Consumed
+})
+
+new Promise(function(resolve,reject){
+    setTimeout(function(){
+        console.log("Async Task 2");
+        resolve();
+    },1000)
+}).then(function(){
+    console.log("Async Task 2 Resolved!");              // 
+})
+
+
+const promiseThree = new Promise(function(resolve,reject){
+  setTimeout(function(){
+    console.log("this is Promise 3");
+    resolve({username:"priyanshu",age:21});
+  },1000)
+})
+
+promiseThree.then(function(obj){
+  console.log(obj);
+})
+
+
+const promiseFour = new Promise(function(resolve,reject){
+    setTimeout(function(){
+        let error = false;
+        if(!error) resolve({username:"priyanshu",age:21});
+        else reject('ERROR: Something Went Wrong!');
+    },1000)
+})
+
+promiseFour.
+    then(function(user){
+    console.log(user);
+    return user.username;
+})
+    .then(function(username){
+    console.log(username);
+})
+    .catch(function(error){
+        console.log(error);
+    })
+    .finally(function(){
+        console.log("Promise is either fulfilled or Rejected!");
+    })
+
+
+// handling promise using async await
+
+
+const promiseFive = new Promise(function(resolve,reject){
+    setTimeout(function(){
+        let error = true;
+        if(!error) resolve({lang:'javascript', status:'learning'});
+        else reject('ERROR: Something Went Wrong!');
+    },1000)
+})
+
+async function consumePromiseFive(){
+    try {
+        const response = await promiseFive;
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+consumePromiseFive();
+
+
+
+// fetchind data from this api : https://jsonplaceholder.typicode.com/users
+
+async function fetchData(){
+    try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/users');
+    const data = await response.json();
+    console.log(data);
+    } catch (error) {
+        console.log(`Error: ${error}`);
+    }
+}
+
+fetchData();
+
+
+// Pahla Tareeke se 
+
+fetch('https://jsonplaceholder.typicode.com/users')
+.then(function(response){
+    return response.json();
+})
+.then(function(data){
+    console.log(data);
+})
+.catch((err)=>console.log(err));
+
+// Yahan pe async await lgane ke jroorat ni hoti kyunki dusra then function tbhi chalega jb pahla execute ho jaega
+
+
+
+// ***************** CALL & THIS in JavaScript ************************
+
+function setUsername(username){
+    this.username = username;                 // agar bina parent this ke changes kroge to vo reflect ni honge
+    console.log('called!');
+}
+
+function createUser(username,email,password){
+    setUsername(username);                    // this will not be able to set property - bcs reference ni dia
+    setUsername(this,username);             // but this will   
+    this.emai = email;
+    this.password = password;
+}
+
+
+// ******************** BIND METHOD *************************
+
+class React{
+  constructor(){
+    this.library = "React";
+    this.server = "https://localhost:3000";
+    document.querySelector('Button').addEventListener('click',this.handleClick.bind(this));
+  }
+
+  handleClick(){
+    console.log('button clicked!');
+    console.log(this.server);           // undefined
+    console.log(this);                   // button aa rha h 
+  }
+}
+
+const obj = new React();
+
+
+
+// ****************** LEXICAL SCOPING & CLOSURE ******************
+
+// Lexical scoping defines the scope of variables within a source code: that is parent function's variable can be accessed by its children function but not vice versa
+// neither the siblings can share the variable 
+
+function outer(){
+    let username = "priyanshu";
+
+    function inner(){
+        let secret = '123';
+        console.log(username);                // will print priyanshu
+    }
+    inner();
+    console.log(secret);                            // undefined errror
+}
+
+outer();
+console.log(username)                          // undefined error
+
+// CLOSURE
+
+function outer(){
+    let name = 'aman';
+    function inner(){
+        console.log(name);
+    }
+    return inner;
+}
+
+const myfun = outer();                      // is case me sirf inner function ka lexical context hi ni pura lexical contest with its parent bhi pass ho jata h
+myfun();                                                      // isse pura lexical scope bhi aajata h
+
 
 
 // LEARN WHAT MATTERS 
@@ -864,3 +1225,4 @@ b = a-b;
 a = a - b;
 console.log("After Swapping: ");
 console.log("a = "+ a + " b = " + b);
+
