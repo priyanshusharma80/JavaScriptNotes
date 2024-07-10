@@ -1,3 +1,12 @@
+Theory : 
+
+Callback Function :  When you take a function and passes it to another function, then the passed function is called callback function
+javascript is a synchronous, single threaded language
+
+Higher Order Function: A function that takes a function as as argument, or return a function is called a higher order function
+
+
+
 Note: 
 - JavaScript is a dynamically typed language
 - all no premitive datatype has typeof an object
@@ -7,7 +16,7 @@ Note:
 let name = "aman";        // string
 let isStudent = true;       // boolean
                                          // null - standalone value (null is an object)
-let age = 21;                   // number  - 2 to the power 53
+let age = 21;                   // number  - range 2 to the power 53
 // bigint - usually used in stock market 
 let brother;                    // undefined 
 // symbol - unique
@@ -17,9 +26,10 @@ console.table([typeof name,typeof isStudent, typeof age, typeof null, typeof bro
 
 // here null type will return "OBJECT", hence null is an object
 
-// Datatypes: 
-//   Premitives: 7 types -> string, boolean, number, null, undefined, symbol, BigInt (call by value)
-//   Reference (non premitive) -> array, objects, functions  (call by reference)
+// ---------------------- Datatypes ✅ ------------------------------
+
+  // Premitives: 7 types -> string, boolean, number, null, undefined, symbol, BigInt (call by value)
+  // Reference (non premitive) -> array, objects, functions  (call by reference)
 
 // ********************** Conversion Operations: ✅ ******************************
 /*
@@ -91,7 +101,7 @@ console.log(num.toPrecision(2))      // 1.2e+2
 
 // toLocaleString();
 let number = 1000000;
-console.log(number.toLocaleString());            // will print 1,000,000 - us based like 100 thousand
+console.log(number.toLocaleString());            // will print 1,000,000 - US based like 100 thousand
 console.log(number.toLocaleString('en-IN'));    // now will print 10,00,000 - indian based
 
 
@@ -180,7 +190,9 @@ const stringarr = arr.join();            // convert array elements into string f
 
 
 const ar = [1,2,3,4,5,6];
-// slice and splice function
+
+// ----------------------- slice and splice function ✅ --------------------------
+
 console.log(ar)                            // [1, 2, 3, 4, 5, 6]
 
 const slicearr = ar.slice(2,4)          
@@ -196,7 +208,7 @@ const arr1 = [1,2,3,4];
 const arr2 = [2,3,4,3];
 
 arr1.push(arr2);                      //  [1,2,3,4,[2,3,4,3]];
-const newarr = arr1.concat(arr2)                   
+const newarr = arr1.concat(arr2)                    
 console.log(newarr)              // [1,2,3,4,2,3,4,3];
 
 // or use spread operator
@@ -218,25 +230,394 @@ console.log(Array.of(a,b,c));                  // will print [a,b,c]
 
 // *********************** OBJECTS ✅ *********************************
 
+// In JavaScript, Objects can be declared in 2 ways 
+//              1. Through Object Constructor
+//              2. Through Object Literal 
+
 // Agar hm constructor ke through object create krte h to vo ek singleton object hota h
 Object.create()
+// or 
+const objd = new Object();
 
-// another way 
+const mySym = Symbol('key1');
+
+// another way : Through object literal 
 const obj = {
     name: "priyanshu",                           // by default ye name ko "name" consider krta h
+    "full name": "Priyanshu Sharma",
     age: 21,
     isLoggedIn: false,
     course: "MCA",
+    [mySym]: "mySym",                         // symbol object
     lastLoginDays: ["Sunday","Monday","Saturday"],
 };
 
 // accessing properties in Object
-console.log(obj.name);
+console.log(obj.name);                      // hmesha ye method kaam ni krta
 console.log(obj[name]);                  // name is not defined error
 console.log(obj["name"])                // ab thik h - priyanshu aayega
 
+console.log(obj."full name")               // Not Possible
+console.log(obj["full name"])             // this is the role you understood?
+console.log(obj[mySym]);                  // syntax to print symbol in javascript
 
-// *********************** Strings and their Functions *******************************
+// making changes in object
+obj.name = "Shubham";
+console.log(obj.name);
+
+Object.freeze(obj);                            // ab koi bhi changes propagate ni honge
+
+
+obj.greeting = function(){
+    console.log("Hello Priyanshu!");
+}
+
+console.log(obj);
+console.log(obj.greeting);             // returns function body - function execute ni hua h sirf function ka reference aaya h 
+console.log(obj.greeting());           // will print : Hello Priyanshu! 
+
+obj.greetings2 = function(){
+    console.log(`Hello ${this.name}`);        // will print Hello priyanshu
+}
+
+console.log(obj.greetings2());
+
+
+// NESTED OBJECT
+const user = {
+    id: 123,
+    fullname: {
+        username: {
+            firstName: "Priyanshu",
+            lastName: "Sharma",
+        }
+    }
+}
+
+console.log(user.fullname.username.firstName);          // Priyanshu
+console.log(user.fullname.username.lastName);           // Sharma
+console.log(user.fullname?.username.lastName);           // Sharma, in case agar fullname exist ni krega to ye expression error ni dega
+
+const ob1 = {1:'a', 2:'b'};
+const ob2 = {3:'c',4:'d'};
+const ob3 = {5:'e',6:'f'};
+
+const obj4 = {ob1,ob2, ob3}                        // will print { {1:'a', 2:'b'}, {3:'c',4:'d'} {5:'e',6:'f'} }
+const obj4 = Object.assign({ }, ob1, ob2, ob3 )      // where first parameter in assign is target object in which the next objects are to be stored!
+const  ob4 = {...ob1, ...ob2, ...ob3};               // using spread operator
+
+// Now if you want to get keys/values list of an object, Here's how you can do it!
+console.log(Object.keys(obj));              // will return the array of keys exist in obj object
+console.log(Object.values(obj));           // will return the array of values for each key
+console.log(Object.entries(obj));          // [ ['name': "Priyanshu"], ['age':21] , ['course':"MCA"] ];
+
+console.log(obj.hasOwnProperty('isLoggedIn'));             // will return true, since it contains isLoggedIn
+
+// Destructuring of Objects
+
+const {name} = obj;
+console.log(name)                 // will print "priyanshu" 
+
+// agar aapko lagta h ki ye bda nam h to isko customize bhi kr skte ho
+const {name: nm} = obj;               // use custom name, this usecase is widely used in react while receiving props
+console.log(nm);                    // will also print "priyanshu"
+
+
+
+// *********************** FUNCTIONS ✅ ****************************** 
+
+function addTwoNumbers(num1,num2){                    // parameters
+    console.log(num1+num2);
+}
+
+addTwoNumbers(3,"4")                 // arguments  
+
+const res = addTwoNumbers(2,4);     
+console.log(`Result : ${res}`)                              // Result: undefined - Kyunki function koi value return ni krra
+
+
+function printMessage ( user = 'defaultValue :)' ){
+    return `${user}, You're logged in!`;
+} 
+
+console.log(printMessage("Priyanshu"));         // will print Priyanshu, You're logged in! 
+
+// but jb aap kuchh paas ni kroge tb kya hoga
+console.log(printMessage());                         // will print undefined, You're logged in -  agar default value ni dete!
+
+
+// USAGE OF REST 
+// imagine a scenario where you want to add cart value on an ecommerce website, but if you'll receive only one parameter, that would not be the right way
+//  that's where we use Rest Operator
+
+function addNumbers( ...nums ){
+    return nums;
+}
+
+console.log(addNumbers(200,300,232,435)); 
+
+
+// Functions with Objects 
+
+function playwithObj ( obj ){
+    return `My Name is ${obj.name} and I'm pursuing ${obj.course}`;
+}
+
+console.log(playwithObj({
+    name: "Priyanshu",
+    course: "MCA",
+}))                                                 // will print "My Name is Priyanshu and I'm pursuing MCA"
+
+
+// *********************** SCOPE ✅ ************************************
+
+var a = 300;
+
+if(true){
+    var a = 400;
+    const b = 230;
+    console.log("Inner: ",a);
+}
+
+console.log(a);                 // will print 400
+console.log(b)                  // will print : Undefined
+
+
+
+let a = 300;
+
+if(true){
+    let a = 400;
+    const b = 230;
+    console.log("Inner: ",a);
+}
+
+console.log(a);                      // will print 300 na ki 400 
+console.log(b);                       // will print undefined
+
+
+function one() {
+    const username = "aman";
+    function two () {
+        const website = "grosocial.in";
+        console.log(username);              // will print username - because child can access parents variable
+    }
+
+    console.log(website);                     // not possible- Error: Website is undefined
+    two();
+}
+
+one();
+
+// IMPORTANT CONCEPT 
+console.log(addOne(5))                    // will print 6
+function addOne(num){
+    return num+1;
+}
+
+console.log(addTwo(4))                    // Error:  addTwo Undefined 
+const addTwo = function (num){                      // this is called function expression
+    return num+2;
+}
+
+
+// ************************* THIS & ARROW FUNCTION *******************************
+
+const obj = {
+    username: "hitesh",
+    price: 999,
+    welcomeMessage: function(){
+        console.log(`hello ${this.username}, How Are You?`);
+        console.log(this)
+    }
+}
+
+obj.welcomeMessage                 // will print nothing because it's a reference only!
+obj.welcomeMessage();             // will print hello hitesh, How Are You? bca now it's invoked!
+
+obj.username = 'Priyanshu';
+obj.welcomeMessage();             // will print hello Priyanshu, How Are You?
+
+console.log(this)                       // returns { } - an empty object, But in Browser this returns the windows object
+
+// YE SMJH LO, this FUNCTIONS ME USE HI NI HO SKTA!
+
+function chai(){
+    console.log(this);                     // will print so much clutter - like function information 
+    let username = 'hitesh';
+    console.log(username)           // will print hitesh obviously
+    console.log(this.username)    // will print undefined - ye sirf object me hi kaam krta h functions me nhi
+}
+
+// same with function expression
+const chai = function () {
+    console.log(this);                     // will print so much clutter
+    let username = 'hitesh';
+    console.log(username)           // will print hitesh obviously
+    console.log(this.username)    // will print undefined - isko bhi ni pta what is this.username   
+}
+
+chai();
+
+
+// ARROW FUNCTIONS -> 
+
+// syntax of arrow function 
+( ) => { }                // ab isko aap ek variable ke andar bhi hold kr skte h
+
+const fun = ( ) =>{
+    let username = 'hitesh';
+    console.log(this.username)    // will print undefined - Yhan pe bhi ni kr skte
+}
+
+// anonymous function can be executed with these following methods:
+//      IIFE
+//      By assigning a variable to anonymous function
+//      By passing into another function
+//      By using it inside an object
+
+
+const addnum = (num1,num2) =>{
+    return num1+num2;
+}
+
+// implicit version of this function 
+const addnum = ( num1,num2) => (num1+num2)
+
+// Syntax :   const variable = (no of parameters) => (return something);
+
+console.log(addnum(2,3));
+
+const example2 = (num1,num2) => {name: "hitesh"}           // will print undefined kyunki aise object ko return ni krte h
+const example2 = (num1,num2) => ({name: "hitesh"})
+
+console.log(example2(2,3)); 
+
+
+// ************************ CONCEPT OF IIFE ✅ ********************************
+
+// IIFE (Immediately Invoked Function Expression) helps to limit the scope of variables, preventing them from polluting the global namespaces
+// there are two types of IIFE :    Named IIFE, Simple IIFE
+
+// NAMED IIFE
+(function() {
+  var localVariable = 'This is private';
+  console.log(localVariable); // 'This is private'
+})();                     // semicolon jroori h yhan dhyan rkhna brna agla execute ni hoga
+
+console.log(localVariable); // ReferenceError: localVariable is not defined
+
+// second way to define
+
+// SIMPLE IIFE
+( ( name ) => {
+    console.log(`Hello ${name}`);
+} ) ('Priyanshu');
+
+
+// ********************** LOOPS ✅ ***********************
+
+// Ye sb to aata hi h : )
+
+
+// ********************* MAPS ************************
+const map = new Map();
+map.set("IN","INDIA");
+map.set("USA", "United States of America");
+map.set("UK", "United Kingdom");
+
+// for of loop
+
+for(const i of map){
+    console.log(i);                            
+}
+
+for(const [key,value] of map){
+    console.log(key + '->' + value)           // this doesn't work for obj
+}
+
+const obj = {
+    js: "javascript",
+    cpp: "C++",
+    py: "Python",
+}
+
+for(const key in obj){
+    console.log(key + '->' + obj[key]); 
+}
+
+const langArr = ["javaScript","C++","Java",'Python'];
+for(const key in langArr){
+    console.log(key)                                    // will print 0,1,2,3 since it is an array
+    console.log(langArr[key]);
+}
+
+// forEach loop
+
+langArr.forEach(function (item){
+    console.log(item);
+})
+
+function greet(item){
+    console.log(item);
+}
+
+langArr.forEach(greet);                    // sirf reference pass kra h run ni kra h function ko
+
+langArr.forEach((item) =>{
+    console.log(item);
+})
+
+
+// *********************** FILTER, MAP & REDUCE ✅ *************************
+
+// what is the use? Sometimes we might needed that forEach should return some value based on some condition
+// but forEach doesn't return any value that's why we use these 3 methods
+
+langArr.forEach((item)=>{
+    return item;                                           // will print undefined only
+});
+
+// filter method
+
+const exm = [1,3,4,5,6,7];
+
+const newexm = [];
+exm.forEach((item)=>{
+    if(item>3) newexm.push(item);                 // thik hi h
+})
+
+const newexm = exm.filter((item)=>item>3);                   // but ye bdia h
+console.log(newexm); 
+
+// map method : Jab hme entire elements of array me changes karne hote h!
+
+const newAns = newexm.map((item)=>item+10);              
+console.log(newAns)                      // 11,13,14,15,16,17
+
+
+// chaining
+const newans = newexm
+                                 .map((num)=>num*10)
+                                 .map((num)=>num+1)
+                                 .filter((item)=> item>40);
+
+
+// Reduce Method
+
+const arr = [1,2,3,4,5];
+
+const myTotal = arr.reduce(function (acc, currVal){
+    console.log(`acc: ${currVal}, currVal:${currVal}`);
+    return acc + currVal;
+}, 0);
+
+const myTotal2 = arr.reduce((acc,currVal)=>acc+currVal,0);
+
+console.log(myTotal);
+
+
+// *********************** Strings and their Functions ✅*******************************
 
 krna h 
 
@@ -246,8 +627,8 @@ console.log(document)                // to HTML document form me dikhayega
 console.dir(document)                 // directory form mtlb jaise object ki form me dikhaega
 
 
-Popular Methods to select any element:
-There are mainly 6 methods to select any DOM element;
+// Popular Methods to select any element:
+// There are mainly 6 methods to select any DOM element;
 
 document.getElementById('id');                           // return type - Element
 document.getElementsByClassName('classname');   // return type - HTMLCollection
@@ -260,12 +641,12 @@ document.querySelectorAll('.myclass')               // returntype - nodelist
 // practice
 document.getElementById('id').className         // returns class of the element selected using id
 document.getElementById('id').getAttribute('id')     // this will return id of that element
-document.getElementById('id').getAttribute('class')     // this will return id of that element
+document.getElementById('id').getAttribute('class')     // this will return class of that element
 
 document.getElementById('id').setAttribute('class', 'myclass')     // this will return id of that element
 
 
-// Accessing content in an HTML Element
+// Accessing content in an HTML Element ✅
 
 there are three methods:
 
@@ -275,11 +656,11 @@ there are three methods:
 
 
 
-// ******************* DOM SELECTORS - NodeList and HTMLCollection ************************
+// ******************* DOM SELECTORS - NodeList and HTMLCollection ✅ ************************
 
 // templist - array jaisa h but map and reduce jaise function ni hote, so we can't use them
 
-const templist = document.querySelectorAll('li');
+const templist = document.querySelectorAll('li');                         // templist queryselector return krta h dom me!
 
 // if we'll do this
 templist.style.color = 'green'           // there comes are error because it is a nodelist
@@ -311,6 +692,557 @@ headingarr.forEach(function(heading){
     heading.innerText = 'Hello Priyanshu';
     heading.style.backgroundColor = 'gray';
 })
+
+
+// ----------------------- CREATING NEW ELEMENT  ----------------------- 
+
+const parent = document.getElementsByClassName('App')[0];
+
+console.log(parent.children);                   // will return a HTMLCollection containing all the child nodes
+console.log(parent.children[1].innerHTML);
+console.log(parent.children[1].innerText);
+
+parent.children[1].style.color = 'green';
+
+const item = document.createElement('div');
+
+
+// setting attributes
+div.id = 'newDiv';
+div.className = 'newClass';
+div.textContent = 'This is a new div';
+
+// creating comment 
+const comment = document.createComment('This is a comment');
+console.log(comment)                  // will print    <!-- This is a Comment --> 
+
+console.log(parent.childNodes);                    // it will return nodelist including all
+
+// nextSibling vs nextElementSibling
+
+/*
+
+Example HTML: 
+
+<div class="App">
+          <h1>Hello React.</h1>
+          <!--This is a Test-->
+          <h2>Start editing to see some magic happen!</h2>
+          <div class="aisehi" style="background-color: black;"></div>
+</div>
+
+*/
+
+console.log(parent.children[0].nextSibling);               // it will return comment
+console.log(parent.children[0].nextElementSibling)      // it will return h2
+
+
+// creation of textnode
+const textnode = document.createTextNode('This is Text');
+
+// appending child in parent 
+parent.appendChild(item);
+
+// agar body ke andar karna h to 
+document.body.appendChild(parent);
+
+
+
+// ------------------- Edit and Remove Elements ---------------------
+
+parent.children[0].replaceWith(comment);                               // replace kr dega first element ko comment se and first element delete ho jaega
+parent.replaceChild(parent.chidren[0],comment);                   // replace kr dega comment ko h2 se and h2 remove ho jaega
+
+// innerHTML and outerHTML
+
+
+// remove method 
+comment.remove();                          // will remove comment element 
+
+
+
+
+// ------------------ EVENTS in JavaScript -------------------------
+
+// ways to insert event  
+//           - inline
+//           - External
+
+// inline suggested ni h
+// <div class='mydiv' onclick="alert("hello")"> </div>           like this
+
+document.getElementById('parent').onclick = function(){
+    alert("Hello Priyanshu!");
+})
+
+// eventlistener - mostly used
+document.getElementById('parent').addEventListener('click', function(){
+    alert("You Clicked Again!");
+}, false)                            // 3rd parameter - event propagation (default - false)
+
+// ab event pe bhi to kaam krna pdega
+
+document.getElementById('parent').addEventListener('click',function(e){
+    console.log(e);                                 // will return a pointerEvent object
+    console.log(e.target);                     // will print that targeted element on which the event happened 
+})
+
+// To Study:         type, timestamp, preventDefault, target, toElement, srcElement, currentTarget
+//                         clientX,clientY, screenX, screenY, altKey, ctrlKey, shiftKey, keyCode
+
+// EVENT PROPAGATION 
+- Event Bubbling  (false)     --  Neeche se Uppar Jaata h 
+- Event Capturing  ---  upar se neeche 
+
+/*
+
+EXample HTML :
+
+ <div >
+        <ul id="images">
+            <li><img width="200px" id="photoshop" src="https://images.pexels.com/photos/3561339/pexels-photo-3561339.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt="photoshop"></li>
+            <li><img width="200px" id="japan" src="https://images.pexels.com/photos/3532553/pexels-photo-3532553.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt=""></li>
+            <li><img width="200px" id="river" src="https://images.pexels.com/photos/3532551/pexels-photo-3532551.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt=""></li>
+            <li><img width="200px" id="owl" src="https://images.pexels.com/photos/3532552/pexels-photo-3532552.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt="" ></li>
+            <li><img width="200px" id="prayer" src="https://images.pexels.com/photos/2522671/pexels-photo-2522671.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load" alt=""></li>
+            <li><a style="color: aliceblue;" href="https://google.com" id="google">Google</a></li>
+        </ul>
+   </div>
+
+*/
+
+document.getElementById('owl').onclick = function(){
+        alert("owl clicked")
+    }
+
+    // type, timestamp, defaultPrevented
+    // target, toElement, srcElement, currentTarget,
+    // clientX, clientY, screenX, screenY
+    // altkey, ctrlkey, shiftkey, keyCode
+
+document.getElementById('images').addEventListener('click', function(e){
+    console.log("clicked inside the ul");
+}, false)
+
+document.getElementById('owl').addEventListener('click', function(e){
+    console.log("owl clicked");
+    e.stopPropagation()                                                // ye lagane ke baad bubble neeche se upar ni jaega mtlb parent ka event print ni krega, mtlb parent wala event execute ni hoga
+}, false)
+
+document.getElementById('google').addEventListener('click',function(e){
+    e.preventDefault();                                                    // page reload ni hoga
+    e.stopPropagation()                                                  // parent event invoke ni hoga
+    console.log("google clicked");
+}, false)
+
+
+document.querySelector('#images').addEventListener('click', function(e){
+    console.log(e.target.tagName);
+    if (e.target.tagName === 'IMG') {
+        console.log(e.target.id);
+        let removeIt = e.target.parentNode
+        removeIt.remove()
+    }
+})
+
+
+// ------------------- API and V8 Engine ----------------------
+
+const reqUrl = "https://api.github.com/users/priyanshusharma80";
+const xhr = new XMLHttpRequest();
+xhr.open('GET', reqUrl);
+
+// console.log(xhr.readyState);                   will print 1
+
+xhr.onreadystatechange = function(){
+    console.log(xhr.readyState);
+    if(xhr.readyState===4){
+        const data  = this.response;
+        console.log(typeof data);               // string 
+        const obj = JSON.parse(data);
+        console.log(typeof obj)                 // object
+        console.log(obj.following);
+        console.log(this.response);
+    }
+}
+xhr.send();
+
+
+
+// ------------------------ PROMISES in JAVASCRIPT ------------------------
+
+// Promise objects represents the eventual completion (or failure) of an asynchronous operation and its resulting value
+
+it has these following 3 states : 
+                   - pending (initial state neither fulfilled nor rejected)
+                   - fullfilled (meaning that the operation was completed successfully)
+                   - reject   (meaning that the operation failed)
+
+
+// creating promises in javascript
+const promiseOne = new Promise(function(resolve,reject){
+    setTimeout(function(){
+        console.log("Async Task is Completed");
+        resolve();                                                            // now it will get connected to then 
+    },1000)
+});
+
+promiseOne.then(function(){
+    console.log('Promise Consumed!');              // will print Async Task is Completed, Promise Consumed
+})
+
+new Promise(function(resolve,reject){
+    setTimeout(function(){
+        console.log("Async Task 2");
+        resolve();
+    },1000)
+}).then(function(){
+    console.log("Async Task 2 Resolved!");              // 
+})
+
+
+const promiseThree = new Promise(function(resolve,reject){
+  setTimeout(function(){
+    console.log("this is Promise 3");
+    resolve({username:"priyanshu",age:21});
+  },1000)
+})
+
+promiseThree.then(function(obj){
+  console.log(obj);
+})
+
+
+const promiseFour = new Promise(function(resolve,reject){
+    setTimeout(function(){
+        let error = false;
+        if(!error) resolve({username:"priyanshu",age:21});
+        else reject('ERROR: Something Went Wrong!');
+    },1000)
+})
+
+promiseFour.
+    then(function(user){
+    console.log(user);
+    return user.username;
+})
+    .then(function(username){
+    console.log(username);
+})
+    .catch(function(error){
+        console.log(error);
+    })
+    .finally(function(){
+        console.log("Promise is either fulfilled or Rejected!");
+    })
+
+
+// handling promise using async await
+
+
+const promiseFive = new Promise(function(resolve,reject){
+    setTimeout(function(){
+        let error = true;
+        if(!error) resolve({lang:'javascript', status:'learning'});
+        else reject('ERROR: Something Went Wrong!');
+    },1000)
+})
+
+async function consumePromiseFive(){
+    try {
+        const response = await promiseFive;
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+consumePromiseFive();
+
+
+
+// fetchind data from this api : https://jsonplaceholder.typicode.com/users
+
+async function fetchData(){
+    try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/users');
+    const data = await response.json();
+    console.log(data);
+    } catch (error) {
+        console.log(`Error: ${error}`);
+    }
+}
+
+fetchData();
+
+
+// Pahla Tareeke se 
+
+fetch('https://jsonplaceholder.typicode.com/users')
+.then(function(response){
+    return response.json();
+})
+.then(function(data){
+    console.log(data);
+})
+.catch((err)=>console.log(err));
+
+// Yahan pe async await lgane ke jroorat ni hoti kyunki dusra then function tbhi chalega jb pahla execute ho jaega
+
+
+
+// ***************** CALL & THIS in JavaScript ************************
+
+function setUsername(username){
+    this.username = username;                 // agar bina parent this ke changes kroge to vo reflect ni honge
+    console.log('called!');
+}
+
+function createUser(username,email,password){
+    setUsername(username);                    // this will not be able to set property - bcs reference ni dia
+    setUsername(this,username);             // but this will   
+    this.emai = email;
+    this.password = password;
+}
+
+
+// ******************** BIND METHOD *************************
+
+class React{
+  constructor(){
+    this.library = "React";
+    this.server = "https://localhost:3000";
+    document.querySelector('Button').addEventListener('click',this.handleClick.bind(this));
+  }
+
+  handleClick(){
+    console.log('button clicked!');
+    console.log(this.server);           // undefined
+    console.log(this);                   // button aa rha h 
+  }
+}
+
+const obj = new React();
+
+
+
+// ****************** LEXICAL SCOPING & CLOSURE ******************
+
+// Lexical scoping defines the scope of variables within a source code: that is parent function's variable can be accessed by its children function but not vice versa
+// neither the siblings can share the variable 
+
+function outer(){
+    let username = "priyanshu";
+
+    function inner(){
+        let secret = '123';
+        console.log(username);                // will print priyanshu
+    }
+    inner();
+    console.log(secret);                            // undefined errror
+}
+
+outer();
+console.log(username)                          // undefined error
+
+// CLOSURE
+
+function outer(){
+    let name = 'aman';
+    function inner(){
+        console.log(name);
+    }
+    return inner;
+}
+
+const myfun = outer();                      // is case me sirf inner function ka lexical context hi ni pura lexical contest with its parent bhi pass ho jata h
+myfun();                                             // isse pura lexical scope bhi aajata h
+
+
+
+// LEARN WHAT MATTERS 
+
+
+Var : 
+  - var exists in ES5 Version
+  - var is function scoped
+  - var adds itself to window object 
+
+let & Const :
+  - let & const exists in ES6 version 
+  - let & consts are braces scoped 
+  - let & const does not add itself in windows object
+
+
+
+var - function scoped - var can be used anywhere in the function in which it's defined. 
+let - braces scoped
+
+function abcd(){
+    for(var i=0;i<4;i++) 
+        console.log(i);
+    console.log(i);           // prints 4
+
+    for(let j=0;j<4;j++)
+        console.log(j);
+    console.log(j)           // error : j is not defined
+}
+
+abcd();
+
+
+// ------------------------ WINDOW OBJECT ✅ ---------------------------------
+There are tons of features that javascript does not have itself, but it uses browsers features to do that work.
+those features are available in window object of browser. Such as Prompt, Alert, Confirm are not the part of javascript but still we can use them in our code
+because javascript allows us to use windows features.
+
+// --------------------- BROWSER CONTEXT API ✅ ---------------------
+Browser Context API gives mainly 3 things : 
+                    - Windows Object
+                    - Stack Memory
+                    - Heap Memory 
+
+
+
+// -------------------------- WORD vs KEYWORD ✅ ----------------------
+Word - That does not have some meaning in JavaScript  i.e. :  Aman, Shubham, Uncle
+Keyword - That has some meaning in JavaScript :   for, while, NaN
+
+// ---------------------------   var const let ✅ ------------------------------
+var - var is something which value can be changed later
+const - const is something which values can't be changed
+
+var a = 5;
+console.log(a);
+a = 6;
+console.log(a);
+
+const b = 6;
+console.log(b);
+b = 7;      (Not Possible)
+console.log(b);
+
+
+// -------------------------------- Hoisting ✅ -------------------------
+Hoisting is when variable can be used before declaration, but it's value will be undefined.
+In hoisting, variables and function declaration is moved on the top of code automatically
+
+console.log(c);       // undefined
+var c = 5;
+// this will be broken down in 2 part
+var c;     Declaration    -  this will be moved up
+c = 5;      Definition
+
+// -------------------  Types in JS ✅  : Premitives & Reference -----------------------
+
+Premitives:  Variable that can be copied without passing reference to it.   : String, null, boolean etc
+References : Variables that cannot be copied directly, but their reference is passed   { },[ ],( )
+
+let ex = 5;
+let ex2 = ex;
+ex2 = 6;
+console.log("ex2: ",ex2)      // ex will not be changed
+console.log("ex: ", ex)
+
+var arr = [1,2,4,5];
+let arr2 = arr;
+arr2.pop();
+console.log("arr2: ",arr2);
+console.log("arr: ",arr);        // arr will also get changed since passed with reference
+
+
+if else : to tum jante hi ho ✅
+
+// -------------------------------- Loops : ✅ ---------------------------------
+For loop
+
+for(let i=0;i<5;i++) console.log(i);
+
+# FUNCTIONS ✅
+types :  Anonymous, Normal, Callback, Asynchronous
+to perform specific operations, help reusable the code.
+
+hellobolo();
+function hellobolo(){
+    console.log("hello Priyanshu :) ");
+}
+
+printNum([1,2,3,4]);
+function printNum(a){
+    // a.pop();   - mtlb ye bhi by reference pass hora h 
+    console.log(a[3]);
+}
+
+
+// ------------------------------ ARRAY ✅ ------------------------------------
+var arr = [1,2,3,4,5];
+arr.push(6);
+console.log(arr);
+
+arr.unshift(0);
+console.log(arr);
+
+arr.shift();
+console.log(arr);
+
+arr.shift();
+console.log(arr);
+
+arr.pop();
+console.log(arr);
+
+arr.splice(2,2);
+console.log(arr);
+
+
+
+// ------------------------- Object ✅ ----------------------------
+
+let obj = {
+    name: "Priyanshu",
+    age: 21,
+    college: "NIT Raipur",
+    greet: function(){
+        console.log(`hello ${this.name}! Good to See you Again :)`);
+    }
+}
+
+console.log(obj);
+console.log(obj[0]);       // wrong way
+console.log(obj.name);
+console.log(obj.age);
+console.log(obj.college);
+console.log(obj.greet());
+
+
+
+
+// ********************* EXTRAS✅ ********************************
+
+console.log("Hello, World!");
+
+let name = 
+    "Priyanshu"+" Sharma";
+console.log(name);
+
+const object = {course: "BCA", rollno: 66};
+
+console.log(object.course);
+console.log(object.rollno);
+console.log(object.name);
+
+
+let a = 5;
+let b = 7;
+
+
+console.log("Before Swapping: ");
+console.log("a = " + a + " b = " + b);
+a = a+b;
+b = a-b;
+a = a - b;
+console.log("After Swapping: ");
+console.log("a = "+ a + " b = " + b);
 
 
 
